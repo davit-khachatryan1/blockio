@@ -127,10 +127,24 @@ const categories = [
   { id: 'DAO', name: 'DAO & Governance' }
 ];
 
+// Define Project interface
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  longDescription: string;
+  client: string;
+  technologies: string[];
+  features: string[];
+  results: string;
+  image: string;
+  category: string;
+}
+
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [selectedProject, setSelectedProject] = useState(null);
-  const projectsRef = useRef(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(projectsRef, { once: true, amount: 0.1 });
 
   // Filter projects based on selected category
@@ -138,7 +152,7 @@ export default function PortfolioPage() {
     ? projects 
     : projects.filter(project => project.category === activeCategory);
 
-  const handleProjectClick = (project) => {
+  const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
     // Scroll to top when a project is selected
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -147,7 +161,7 @@ export default function PortfolioPage() {
   const handleBackToProjects = () => {
     setSelectedProject(null);
     // Scroll to projects section when going back
-    projectsRef.current.scrollIntoView({ behavior: 'smooth' });
+    projectsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
